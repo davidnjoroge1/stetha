@@ -26,6 +26,7 @@ CACHES = {
     },
 }
 
+## databases:
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-host
@@ -64,6 +65,7 @@ INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html#configuration
 INSTALLED_APPS += ["django_extensions"]
 # Celery
+CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6379/0")
 # ------------------------------------------------------------------------------
 # https://docs.celeryq.dev/en/stable/userguide/configuration.html#task-always-eager
 CELERY_TASK_ALWAYS_EAGER = True
@@ -71,3 +73,6 @@ CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_EAGER_PROPAGATES = True
 # Your stuff...
 # ------------------------------------------------------------------------------
+REDIS_HOST = env("REDIS_HOST", default="127.0.0.1")
+REDIS_PORT = env("REDIS_PORT", default="6379")
+CELERY_BROKER_URL = env("CELERY_BROKER_URL", default=f"redis://{REDIS_HOST}:{REDIS_PORT}/0")

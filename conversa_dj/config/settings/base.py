@@ -1,7 +1,10 @@
 # ruff: noqa: ERA001, E501
 """Base settings to build other settings files upon."""
 
+import os
 from pathlib import Path
+from django.apps import AppConfig
+
 
 import environ
 
@@ -10,10 +13,9 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 APPS_DIR = BASE_DIR / "conversa_dj"
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
-if READ_DOT_ENV_FILE:
-    # OS environment variables take precedence over variables from .env
-    env.read_env(str(BASE_DIR / ".env"))
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -75,6 +77,7 @@ DJANGO_APPS = [
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
+    
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -356,3 +359,6 @@ CHANNEL_LAYERS = {
         },
     },
 }
+class ChatsConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "conversa_dj.chats"  # specifically this line
